@@ -28,7 +28,7 @@ export default (props: Props) => {
               <Show when={props.canEdit()} fallback={<IconEnv />}>
                 <span onClick={() => props.setCurrentSystemRoleSettings('')} class="sys-edit-btn p-1 rd-50%" > <IconX /> </span>
               </Show>
-              <span>System Role: </span>
+              <span>系统角色: </span>
             </div>
             <div class="mt-1">
               {props.currentSystemRoleSettings()}
@@ -48,11 +48,11 @@ export default (props: Props) => {
             <IconEnv />
             <span>System Role:</span>
           </div>
-          <p class="my-2 leading-normal text-sm op-50 dark:op-60">Gently instruct the assistant and set the behavior of the assistant.</p>
+          <p class="my-2 leading-normal text-sm op-50 dark:op-60">轻轻地指导助手并设置助手的行为</p>
           <div>
             <textarea
               ref={systemInputRef!}
-              placeholder="You are a helpful assistant, answer as concisely as possible...."
+              placeholder="tips:你是一个乐于助人的助手，尽可能简洁地回答。"
               autocomplete="off"
               autofocus
               rows="3"
@@ -60,7 +60,7 @@ export default (props: Props) => {
             />
           </div>
           <button onClick={handleButtonClick} gen-slate-btn>
-            Set
+            Ok
           </button>
         </div>
       </Show>
