@@ -6,7 +6,7 @@ import { verifySignature } from '@/utils/auth'
 import type { APIRoute } from 'astro'
 
 //const apiKey = import.meta.env.OPENAI_API_KEY
-const apiKey = "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"
+const apiKey = "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"
 const httpsProxy = import.meta.env.HTTPS_PROXY
 const baseUrl = ((import.meta.env.OPENAI_API_BASE_URL) || 'https://api.openai.com').trim().replace(/\/$/, '')
 const sitePassword = import.meta.env.SITE_PASSWORD
