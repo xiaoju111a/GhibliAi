@@ -1,0 +1,1357 @@
+/* Ghibli-inspired OpenAI Chat Interface */
+
+@import url('https://fonts.googleapis.com/css2?family=Sen:wght@400;700&display=swap');
+
+:root {
+  --ghibli-blue: #75b9be;
+  --ghibli-green: #a8d5ba;
+  --ghibli-light: #f8f9fa;
+  --ghibli-cream: #fff8e7;
+  --ghibli-pink: #eea2a4;
+  --ghibli-brown: #594a3c;
+  --ghibli-grey: #686963;
+  --totoro-grey: #929292;
+  --soot-black: #303030;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Sen', sans-serif;
+  background: var(--ghibli-cream);
+  background-image: 
+    url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23a8d5ba' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E"),
+    radial-gradient(circle at 50% 0%, var(--ghibli-blue) 0%, transparent 35%);
+  background-attachment: fixed;
+  color: var(--ghibli-brown);
+  line-height: 1.6;
+}
+
+.app {
+  max-width: 1000px;
+  min-height: 100vh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header Section */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  position: relative;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(5px);
+  border-bottom: 2px solid var(--ghibli-green);
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.header h1 {
+  color: var(--ghibli-brown);
+  font-size: 1.8rem;
+  font-weight: 700;
+  position: relative;
+}
+
+.header h1::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 40%;
+  height: 3px;
+  background: var(--ghibli-green);
+  border-radius: 3px;
+}
+
+.wallet-section {
+  display: flex;
+  align-items: center;
+}
+
+.connect-button {
+  background: var(--ghibli-blue);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.connect-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  background: #65a7af;
+}
+
+.wallet-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.account {
+  background: var(--ghibli-brown);
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  margin-bottom: 0.3rem;
+}
+
+.balance {
+  font-size: 0.9rem;
+  color: var(--ghibli-grey);
+  font-weight: 600;
+}
+
+/* Model Selector Styles */
+.model-selector {
+  position: relative;
+  margin: 0 auto 20px;
+  width: 90%;
+  max-width: 800px;
+  z-index: 100;
+}
+
+.selected-model {
+  display: flex;
+  align-items: center;
+  background-color: var(--ghibli-cream);
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1px solid var(--ghibli-green);
+  transition: all 0.2s ease;
+  color: var(--ghibli-brown);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.selected-model:hover {
+  background-color: var(--ghibli-light);
+  border-color: var(--ghibli-blue);
+}
+
+.model-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  color: var(--ghibli-blue);
+}
+
+.dropdown-arrow {
+  width: 16px;
+  height: 16px;
+  margin-left: auto;
+  color: var(--ghibli-blue);
+  transition: transform 0.2s ease;
+}
+
+.model-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: var(--ghibli-light);
+  border-radius: 8px;
+  margin-top: 5px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--ghibli-green);
+  overflow: hidden;
+}
+
+.model-option {
+  display: flex;
+  align-items: center;
+  padding: 12px 15px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.model-option:hover {
+  background-color: #353853;
+}
+
+.model-option.selected {
+  background-color: #434663;
+}
+
+.model-name {
+  flex: 1;
+}
+
+.model-badge {
+  font-size: 0.75rem;
+  background-color: #a28bd0;
+  color: #1c1e2a;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+/* Chat Container */
+.chat-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  background: white;
+  margin: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(168, 213, 186, 0.3);
+  overflow: hidden;
+}
+
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Welcome Message with Totoro */
+.welcome-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
+  gap: 2rem;
+  padding: 2rem;
+  color: var(--ghibli-grey);
+}
+
+.welcome-message p {
+  margin: 8px 0;
+  text-align: center;
+  max-width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.fee-note {
+  font-size: 0.9rem !important;
+  opacity: 0.7;
+  margin-top: -1rem;
+}
+
+/* Totoro Animation */
+.totoro {
+  position: relative;
+  width: 120px;
+  height: 150px;
+  margin-bottom: 1rem;
+}
+
+.totoro-body {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: var(--totoro-grey);
+  border-radius: 50%;
+  transform: scale(0.95, 1);
+}
+
+.totoro-ears {
+  position: absolute;
+  width: 20px;
+  height: 35px;
+  background-color: var(--totoro-grey);
+  border-radius: 50% 50% 0 0;
+}
+
+.totoro-ears.left {
+  top: -15px;
+  left: 25px;
+  transform: rotate(-10deg);
+}
+
+.totoro-ears.right {
+  top: -15px;
+  right: 25px;
+  transform: rotate(10deg);
+}
+
+.totoro-eyes {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  background-color: black;
+  border-radius: 50%;
+  top: 40px;
+}
+
+.totoro-eyes.left {
+  left: 35px;
+}
+
+.totoro-eyes.right {
+  right: 35px;
+}
+
+.totoro-nose {
+  position: absolute;
+  width: 12px;
+  height: 9px;
+  background-color: black;
+  border-radius: 50%;
+  top: 55px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.totoro-whiskers {
+  position: absolute;
+  width: 25px;
+  height: 2px;
+  background-color: black;
+}
+
+.totoro-whiskers.w1 {
+  top: 60px;
+  left: 15px;
+  transform: rotate(-10deg);
+}
+
+.totoro-whiskers.w2 {
+  top: 67px;
+  left: 17px;
+  transform: rotate(-5deg);
+}
+
+.totoro-whiskers.w3 {
+  top: 60px;
+  right: 15px;
+  transform: rotate(10deg);
+}
+
+.totoro-whiskers.w4 {
+  top: 67px;
+  right: 17px;
+  transform: rotate(5deg);
+}
+
+.totoro-belly {
+  position: absolute;
+  width: 60px;
+  height: 50px;
+  background-color: #c9c9c9;
+  border-radius: 50%;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Message Bubbles */
+.message {
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+.user-message {
+  justify-content: flex-end;
+}
+
+.ai-message {
+  justify-content: flex-start;
+}
+
+.message-bubble {
+  max-width: 70%;
+  padding: 0.8rem 1.2rem;
+  border-radius: 18px;
+  font-size: 1rem;
+  line-height: 1.5;
+  word-wrap: break-word;
+}
+
+.user-message .message-bubble {
+  background-color: var(--ghibli-blue);
+  color: white;
+  border-bottom-right-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.ai-message .message-bubble {
+  background-color: var(--ghibli-green);
+  color: var(--ghibli-brown);
+  border-bottom-left-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Input Container */
+.input-container {
+  display: flex;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-top: 1px solid rgba(168, 213, 186, 0.3);
+  align-items: flex-end;
+}
+
+.input-wrapper {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+}
+
+textarea {
+  flex: 1;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  padding: 0.8rem 1.2rem;
+  padding-right: 40px; /* Space for upload button */
+  font-size: 1rem;
+  font-family: 'Sen', sans-serif;
+  resize: none;
+  height: 60px;
+  outline: none;
+  transition: border 0.3s;
+  width: 100%;
+}
+
+textarea:focus {
+  border-color: var(--ghibli-blue);
+}
+
+textarea:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
+
+.send-button {
+  background: var(--ghibli-blue);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s, background 0.3s;
+  align-self: flex-end;
+  margin-bottom: 8px;
+}
+
+.send-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  background: #65a7af;
+}
+
+.send-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.send-button svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Loading Animation */
+.send-button.loading {
+  background: var(--ghibli-green);
+}
+
+.soot-sprite-loading {
+  display: flex;
+  gap: 3px;
+}
+
+.soot-sprite {
+  width: 8px;
+  height: 8px;
+  background: var(--soot-black);
+  border-radius: 50%;
+  animation: bounce 0.5s infinite alternate;
+}
+
+.soot-sprite:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.soot-sprite:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes bounce {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Upload Button */
+.upload-button {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  background: none;
+  border: none;
+  padding: 6px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+  color: var(--ghibli-grey);
+  width: 30px;
+  height: 30px;
+}
+
+.upload-button svg {
+  width: 18px;
+  height: 18px;
+}
+
+.upload-button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.upload-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.upload-button.active {
+  background-color: var(--ghibli-green);
+  color: white;
+}
+
+.upload-button.has-files {
+  background-color: var(--ghibli-blue);
+  color: white;
+}
+
+.file-count {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: var(--ghibli-pink);
+  color: white;
+  font-size: 0.7rem;
+  font-weight: bold;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid white;
+}
+
+/* Upload Panel */
+.upload-panel {
+  border-top: 1px solid rgba(168, 213, 186, 0.3);
+  padding: 1rem;
+  background-color: #f9f9f9;
+  border-radius: 0 0 12px 12px;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.upload-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.upload-header h3 {
+  font-size: 1rem;
+  color: var(--ghibli-brown);
+  margin: 0;
+}
+
+.close-panel {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--ghibli-grey);
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.close-panel:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.upload-area {
+  border: 2px dashed var(--ghibli-green);
+  border-radius: 12px;
+  padding: 2rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.upload-area:hover {
+  background-color: rgba(168, 213, 186, 0.1);
+}
+
+/* Drag and drop styles */
+.upload-area.dragging {
+  background-color: rgba(168, 213, 186, 0.2);
+  border-color: var(--ghibli-blue);
+}
+
+.upload-icon {
+  color: var(--ghibli-green);
+  width: 40px;
+  height: 40px;
+  margin: 0 auto 1rem;
+}
+
+.upload-area p {
+  color: var(--ghibli-grey);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.file-list {
+  margin-top: 1rem;
+}
+
+.file-list h4 {
+  font-size: 0.9rem;
+  color: var(--ghibli-grey);
+  margin: 0 0 0.5rem 0;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  background-color: white;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.file-item-icon {
+  width: 24px;
+  height: 24px;
+  color: var(--ghibli-blue);
+  margin-right: 0.5rem;
+}
+
+.file-item-info {
+  flex: 1;
+}
+
+.file-item-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 250px;
+}
+
+.file-item-size {
+  font-size: 0.75rem;
+  color: var(--ghibli-grey);
+}
+
+.remove-file {
+  background: none;
+  border: none;
+  color: var(--ghibli-grey);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.remove-file:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #d43939;
+}
+
+/* File Attachments in Messages */
+.file-attachments {
+  margin-top: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.file-attachment {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+}
+
+.file-icon {
+  width: 24px;
+  height: 24px;
+  color: inherit;
+}
+
+.file-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.file-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+.file-size {
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+/* Error Message */
+.error-message {
+  background-color: rgba(255, 107, 107, 0.1);
+  border: 1px solid rgba(255, 107, 107, 0.5);
+  color: #d43939;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  margin: 0 1rem 1rem;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* Credit System */
+.credits {
+  font-size: 0.9rem;
+  color: var(--ghibli-grey);
+  font-weight: 600;
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 0.3rem 0.8rem;
+  border-radius: 12px;
+  margin-top: 0.3rem;
+}
+
+.credits.no-credits {
+  color: #d43939;
+  background-color: rgba(255, 107, 107, 0.1);
+}
+
+.purchase-button {
+  background: var(--ghibli-blue);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 0.5rem 1rem;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s;
+  width: 100%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.purchase-button:hover:not(:disabled) {
+  background-color: #65a7af;
+  transform: translateY(-2px);
+}
+
+.purchase-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.purchase-prompt {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  border: 1px dashed var(--ghibli-green);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(168, 213, 186, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(168, 213, 186, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(168, 213, 186, 0);
+  }
+}
+
+.purchase-prompt p {
+  font-size: 1rem !important;
+  color: var(--ghibli-brown) !important;
+  margin-bottom: 1rem !important;
+}
+
+.purchase-button-large {
+  background: var(--ghibli-blue);
+  color: white;
+  border: none;
+  border-radius: 24px;
+  padding: 0.7rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.purchase-button-large:hover:not(:disabled) {
+  background-color: #65a7af;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.purchase-button-large:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Footer */
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  text-align: center;
+  color: var(--ghibli-grey);
+  font-size: 0.8rem;
+  border-top: 1px solid rgba(168, 213, 186, 0.3);
+  background: rgba(255, 255, 255, 0.7);
+  margin-top: auto;
+}
+
+/* Soot Sprites Animation in Footer */
+.soot-sprites-container {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.soot-sprite-animated {
+  width: 15px;
+  height: 15px;
+  background-color: var(--soot-black);
+  border-radius: 50%;
+  position: relative;
+  animation: float 3s infinite ease-in-out;
+}
+
+.soot-sprite-animated:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+.soot-sprite-animated:nth-child(3) {
+  animation-delay: 1s;
+}
+
+.soot-sprite-animated::before,
+.soot-sprite-animated::after {
+  content: '';
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background-color: white;
+  border-radius: 50%;
+  top: 3px;
+}
+
+.soot-sprite-animated::before {
+  left: 3px;
+}
+
+.soot-sprite-animated::after {
+  right: 3px;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.highlighted-url {
+  color: #1E88E5;
+  background-color: rgba(30, 136, 229, 0.1);
+  padding: 2px 5px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+  word-break: break-all;
+}
+
+.highlighted-url:hover {
+  background-color: rgba(30, 136, 229, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+  
+  .header h1::after {
+    left: 30%;
+    width: 40%;
+  }
+  
+  .wallet-info {
+    align-items: center;
+  }
+  
+  .message-bubble {
+    max-width: 80%;
+  }
+  
+  .model-selector {
+    width: 95%;
+  }
+  
+  .selected-model {
+    padding: 8px 12px;
+  }
+  
+  .model-option {
+    padding: 10px 12px;
+  }
+  /* 授权部分的主容器 */
+.auth-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: auto;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  backdrop-filter: blur(5px);
+}
+
+/* 未激活状态的授权表单 */
+.auth-form {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* 授权码输入框 */
+.auth-form input {
+  padding: 10px 15px;
+  border: 2px solid #86a8a8;
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+  color: #3a5151;
+  transition: all 0.3s;
+  width: 180px;
+  outline: none;
+}
+
+.auth-form input:focus {
+  border-color: #5c9ead;
+  box-shadow: 0 0 8px rgba(92, 158, 173, 0.5);
+}
+
+/* 激活按钮 */
+.auth-button {
+  padding: 10px 20px;
+  background-color: #5c9ead;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.auth-button:hover {
+  background-color: #4d8494;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.auth-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* 已激活状态的信息显示 */
+.auth-info {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  font-size: 14px;
+}
+
+/* 授权码显示 */
+.auth-code {
+  background-color: rgba(92, 158, 173, 0.2);
+  padding: 8px 15px;
+  border-radius: 15px;
+  font-weight: 600;
+  color: #3a5151;
+  border: 1px solid rgba(92, 158, 173, 0.3);
+}
+/* 吉卜力风格的授权部分 */
+.ghibli-auth-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: auto;
+  padding: 15px;
+  background-color: rgba(245, 241, 232, 0.7);
+  border-radius: 15px;
+  border: 2px solid #a3b18a;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.ghibli-auth-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, #a3b18a, #588157, #3a5a40);
+  opacity: 0.6;
+}
+
+/* 未授权状态的表单 */
+.ghibli-auth-form {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+}
+
+/* 煤炭精灵装饰 */
+.soot-sprite-decoration {
+  width: 20px;
+  height: 20px;
+  background-color: #333;
+  border-radius: 50%;
+  position: relative;
+  opacity: 0.8;
+}
+
+.soot-sprite-decoration::before,
+.soot-sprite-decoration::after {
+  content: '';
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background-color: #fff;
+  border-radius: 50%;
+  top: 6px;
+}
+
+.soot-sprite-decoration::before {
+  left: 6px;
+}
+
+.soot-sprite-decoration::after {
+  right: 6px;
+}
+
+.soot-sprite-decoration.left {
+  margin-right: 10px;
+  animation: float 3s ease-in-out infinite;
+}
+
+.soot-sprite-decoration.right {
+  margin-left: 10px;
+  animation: float 3s ease-in-out 1.5s infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+/* 输入容器 */
+.auth-input-container {
+  display: flex;
+  flex: 1;
+}
+
+/* 吉卜力风格的输入框 */
+.ghibli-input {
+  flex: 1;
+  padding: 10px 15px;
+  border: 2px solid #588157;
+  border-radius: 20px 0 0 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  font-size: 14px;
+  color: #3a5a40;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  transition: all 0.3s;
+}
+
+.ghibli-input:focus {
+  outline: none;
+  border-color: #3a5a40;
+  box-shadow: 0 0 10px rgba(58, 90, 64, 0.3);
+  background-color: #fff;
+}
+
+.ghibli-input::placeholder {
+  color: #a3b18a;
+  font-style: italic;
+}
+
+/* 吉卜力风格的按钮 */
+.ghibli-button {
+  padding: 10px 20px;
+  background-color: #588157;
+  color: #fff;
+  border: 2px solid #588157;
+  border-radius: 0 20px 20px 0;
+  font-weight: 600;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  cursor: pointer;
+  transition: all 0.3s;
+  letter-spacing: 1px;
+}
+
+.ghibli-button:hover {
+  background-color: #3a5a40;
+  border-color: #3a5a40;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.ghibli-button:active {
+  transform: translateY(0);
+}
+
+/* 已授权状态信息 */
+.ghibli-auth-info {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  width: 100%;
+}
+
+/* 龙猫徽章 */
+.totoro-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: rgba(88, 129, 87, 0.2);
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-weight: 600;
+  color: #3a5a40;
+  border: 1px solid rgba(88, 129, 87, 0.3);
+  flex: 1;
+}
+
+/* 迷你龙猫图标 */
+.mini-totoro {
+  width: 16px;
+  height: 16px;
+  background-color: #888;
+  border-radius: 50%;
+  position: relative;
+}
+
+.mini-totoro::before,
+.mini-totoro::after {
+  content: '';
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background-color: #fff;
+  border-radius: 50%;
+  top: 4px;
+}
+
+.mini-totoro::before {
+  left: 3px;
+}
+
+.mini-totoro::after {
+  right: 3px;
+}
+
+/* 吉卜力风格的剩余次数 */
+.ghibli-credits {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #3a5a40;
+  font-weight: 600;
+  background-color: rgba(88, 129, 87, 0.1);
+  padding: 8px 15px;
+  border-radius: 20px;
+  border: 1px solid rgba(88, 129, 87, 0.2);
+  flex: 1;
+}
+
+/* 树叶图标 */
+.leaf-icon {
+  width: 14px;
+  height: 14px;
+  background-color: #588157;
+  border-radius: 0 50% 50% 50%;
+  transform: rotate(45deg);
+  position: relative;
+}
+
+.leaf-icon::before {
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.7);
+  top: 7px;
+  left: 4px;
+}
+
+/* 次数耗尽样式 */
+.ghibli-credits.no-credits {
+  color: #bc4749;
+  background-color: rgba(188, 71, 73, 0.1);
+  border-color: rgba(188, 71, 73, 0.3);
+}
+
+.ghibli-credits.no-credits .leaf-icon {
+  background-color: #bc4749;
+}
+
+/* 错误信息 */
+.ghibli-error-message {
+  color: #bc4749;
+  background-color: rgba(188, 71, 73, 0.1);
+  padding: 10px 15px;
+  border-radius: 10px;
+  margin: 10px auto;
+  text-align: center;
+  max-width: 80%;
+  border-left: 3px solid #bc4749;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  font-size: 14px;
+  position: relative;
+}
+
+.ghibli-error-message::before {
+  content: '!';
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-weight: bold;
+  color: #bc4749;
+}
+
+/* 剩余次数显示 */
+.credits {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #3a5151;
+  font-weight: 600;
+}
+
+/* 剩余次数前的图标 */
+.credits::before {
+  content: '';
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background-color: #5c9ead;
+  border-radius: 50%;
+}
+
+/* 次数耗尽时的样式 */
+.no-credits {
+  color: #e74c3c;
+}
+
+.no-credits::before {
+  background-color: #e74c3c;
+}
+
+/* 错误信息显示 */
+.error-message {
+  color: #e74c3c;
+  background-color: rgba(231, 76, 60, 0.1);
+  padding: 10px 15px;
+  border-radius: 10px;
+  margin: 10px auto;
+  text-align: center;
+  max-width: 80%;
+  border-left: 3px solid #e74c3c;
+  font-size: 14px;
+}
+}
