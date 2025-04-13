@@ -36,7 +36,7 @@ function App() {
   // Valid authorization codes (in a real app, this would be stored on a server)
   const VALID_AUTH_CODES = {
     "GHIBLI2025": { maxUses: 100, used: 0 },
-    "TOTORO2025": { maxUses: 100, used: 0 },
+    "G4": { maxUses: 100, used: 0 },
     "SPIRITED2025": { maxUses: 100, used: 0 }
   };
   
